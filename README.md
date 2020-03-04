@@ -1,4 +1,4 @@
 # Tracking-motor
 Aplikasi untuk tracking sepeda motor
 
-Created by : Informatika 2020
+Created by : Informatika UTY 2020
