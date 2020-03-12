@@ -31,7 +31,6 @@
 								<th><center>Koordinat Terkini<br>(Lat, Long)</center></th>
 								<th><center>Jarak Dari<br>Koordinat Awal</center></th>
 								<th><center>Status</center></th>
-								<th><center>Aksi</center></th>
 							</thead>
 							<tbody>
 								<?php 
@@ -54,10 +53,6 @@
 										<?php if ($value['status'] == 'Di Larang'): ?>
 											<td><span class="badge" style="background-color: red;color:white;"><?php echo $value['status'] ?></span></td>
 										<?php endif ?>
-										<td nowrap="">
-											<button class="btn btn-sm btn-warning"><i class="fa fa-edit"> Edit</i></button>
-											<button class="btn btn-sm btn-danger"><i class="fa fa-edit"> Delete</i></button>
-										</td>
 									</tr>
 								<?php } ?>
 							</tbody>
