@@ -39,6 +39,41 @@ class Dao
 			return $result['jml'];
 		}
 
+		public function getLokasi()
+		{
+			$query = "SELECT MAX(id) as id FROM riwayat GROUP BY id_lokasi ORDER BY waktu DESC";
+			$id = mysqli_query($this->link->conn,$query);
+			$all_id = '';
+			$i = 0; 
+			foreach ($id as $value) {
+				if ($i == 0) 
+					$all_id .= "'";
+				$all_id .= $value['id'];
+				if ($i != ($id->num_rows-1))
+					$all_id .= "','";
+				else 
+					$all_id .="'";
+				$i++;
+			}
+			// echo $all_id;die;
+			$query = "SELECT `riwayat`.*, merk,plat_nomor,pengguna, latitude, longitude, batas, nama_lokasi FROM `kendaraan`,`lokasi`,`riwayat` WHERE `lokasi`.id_kendaraan = `kendaraan`.id AND `lokasi`.id = `riwayat`.id_lokasi AND `riwayat`.id IN ($all_id)";
+			$lokasi = mysqli_query($this->link->conn,$query);
+			$all_lokasi = array();
+			$idx = 0;
+			foreach ($lokasi as $value) {
+				if ($value['status'] == 'Di Izinkan') 
+					$color = 'blue';
+				else
+					$color = 'red';
+				$all_lokasi[$idx][0] = '<table><tbody><tr><td colspan="3"><p style="text-align: center;"><h4><strong><center>Lokasi Terkini</center></strong></h4></p><p style="text-align: center;"><span>Status :</spa> <span class="badge" style="background-color: '.$color.';color:white;">'.$value['status'].'</span> <a href="#"> Detail</a></p></td></tr><tr><td width="100px">Pengguna</td><td>:</td><td width="200px">'.$value['pengguna'].'</td></tr><tr><td>Motor</td><td width="10px">:</td><td>'.$value['merk'].' ('.$value['plat_nomor'].')'.'</td></tr><tr><td>Lokasi Batas</td><td>:</td><td>'.$value['nama_lokasi'].'</td></tr><tr><td>Radius</td><td>:</td><td>'.$value['batas'].' Km</td></tr><tr><td>Lokasi Terkini</td><td>:</td><td>Janti</td></tr><tr><td>Jarak</td><td>:</td><td>'.$value['jarak_now'].' Km</td></tr></tbody></table>';
+				$all_lokasi[$idx][1] = $value['latitude_now'];
+				$all_lokasi[$idx][2] = $value['longitude_now'];
+				$idx++;
+			}
+			// echo "<pre>",print_r($all_lokasi),"</pre>";die;
+			return $all_lokasi;
+		}
+
 		public function execute($query)
 		{
 			$result = mysqli_query($this->link->conn, $query);

@@ -19,8 +19,6 @@
 				<h1 class="page-header">History</h1>
 				<div class="panel">
 					<div class="panel-body container-fluid">
-						<button class="btn btn-sm btn-primary"><i class="fa fa-plus"> Tambah</i></button>
-						<br><br>
 						<table class="table table-striped">
 							<thead style="background-color: #1E90FF; color:white;" class="text-center">
 								<th><center>No</center></th>
@@ -34,7 +32,7 @@
 							</thead>
 							<tbody>
 								<?php 
-								include_once 'config/dao.php';
+								include_once 'config/dao.php'; 
 								$dao = new Dao();
 								$result = $dao->viewHistory();
 								$no = 1;

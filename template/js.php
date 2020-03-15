@@ -22,28 +22,5 @@
 		else{
 			$('#menu-alat').addClass("active");
 		}
-
-		function initMap() {
-			var uluru = {lat: -7.790849, lng:  110.365101};
-			var map = new google.maps.Map(document.getElementById('map'),{
-				zoom: 11, 
-				center: uluru
-			});
-
-			var contentString = '<div id="content"><div id="siteNotice">Yogyakarta</div></div>';
-
-			var infowindow = new google.maps.InfoWindow({
-				content: contentString
-			});
-
-			var marker = new google.maps.Marker({
-				position: uluru,
-				map: map,
-				title: 'Uluru (Ayers Rock)'
-			});
-			marker.addListener('click', function() {
-				infowindow.open(map, marker);
-			});
-		}
 	</script>
-	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuqp6YJymNF8Et7Xvd6SO3sBYqu2Bkc88&callback=initMap"></script>
+
