@@ -70,8 +70,32 @@ class Dao
 				$all_lokasi[$idx][2] = $value['longitude_now'];
 				$idx++;
 			}
-			// echo "<pre>",print_r($all_lokasi),"</pre>";die;
 			return $all_lokasi;
+		}
+
+		public function cekJarak($id, $latitude_now, $longitude_now)
+		{
+			$result = array();
+			$query = "SELECT * FROM lokasi WHERE id = '$id'";
+			$batas = mysqli_query($this->link->conn,$query);
+			$batas = $batas->fetch_array();
+			$result['jarak'] = $this->getDistance($batas['latitude'],$batas['longitude'],$latitude_now,$longitude_now);
+			if ($result['jarak'] > $batas['batas'])
+				$result['status'] = 'Di Larang';
+			else
+				$result['status'] = 'Di Izinkan';
+			return $result;
+		}
+
+		public function getDistance($latitude1, $longitude1, $latitude2, $longitude2) 
+		{ 
+			$theta = $longitude1 - $longitude2; 
+			$distance = (sin(deg2rad($latitude1)) * sin(deg2rad($latitude2)))  + (cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * cos(deg2rad($theta))); 
+			$distance = acos($distance); 
+			$distance = rad2deg($distance); 
+			$distance = $distance * 60 * 1.1515;  
+			$distance = $distance * 1.609344;  
+			return (round($distance,2)); 
 		}
 
 		public function execute($query)
@@ -83,8 +107,6 @@ class Dao
 				return mysqli_error($this->link->conn);
 			}
 		}
-
-
 	}
 
 	?>
