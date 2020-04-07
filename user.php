@@ -76,7 +76,7 @@
 										<!-- <td><?php echo $value['roles'] ?></td> -->
 										<td nowrap="">
 											<button class="btn btn-sm btn-warning" onclick="edit(<?php echo $edit ?>);"><i class="fa fa-edit"></i> Edit</button>
-											<button class="btn btn-sm btn-danger" onclick="del(<?php echo $del ?>)"><i class="fa fa-edit"></i> Delete</button>
+											<button class="btn btn-sm btn-danger" onclick="del(<?php echo $del ?>)"><i class="fa fa-trash"></i> Delete</button>
 										</td>
 									</tr>
 								<?php } ?>

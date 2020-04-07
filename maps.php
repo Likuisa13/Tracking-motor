@@ -54,8 +54,8 @@
 										<td><?php echo $value['nama_lokasi'] ?></td>
 										<td><?php echo $value['batas'].' Km' ?></td>
 										<td nowrap="">
-											<button class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Edit</button>
-											<button class="btn btn-sm btn-danger" onclick="del(<?php echo $del ?>)"><i class="fa fa-edit"></i> Delete</button>
+											<a href="form-maps?id=<?php echo $value['id'] ?>"><button class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Edit</button></a>
+											<button class="btn btn-sm btn-danger" onclick="del(<?php echo $del ?>)"><i class="fa fa-trash"></i> Delete</button>
 										</td>
 									</tr>
 								<?php } ?>

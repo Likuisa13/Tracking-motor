@@ -13,7 +13,36 @@
 				<li class="active">Kendaraan</li>
 			</ol>
 		</div><!--/.row-->
-		
+		<?php
+		include_once 'config/dao.php';
+		$dao = new Dao(); 
+		if (!empty($_GET['id'])) {
+			$id_lokasi = $_GET['id'];
+			$aksi = 'edit';
+			$query = "SELECT `lokasi`.*, merk, pengguna FROM `lokasi`,`kendaraan` WHERE `kendaraan`.id = `lokasi`.id_kendaraan AND `lokasi`.id = '$id_lokasi'";
+			$result = $dao->execute($query);
+			$result = $result->fetch_array();
+			$nama_lokasi = $result['nama_lokasi'];
+			$kendaraan = $result['id_kendaraan'];
+			$lat = $result['latitude'];
+			$lng = $result['longitude'];
+			$radius = $result['batas'];
+			$merk = $result['merk'];
+			$pengguna = $result['pengguna'];
+		}
+		else{
+			$aksi = 'simpan';
+			$id_lokasi;
+			$nama_lokasi;
+			$kendaraan;
+			$lat;
+			$lng;
+			$radius;
+			$merk;
+			$pengguna;
+		}
+
+		?>
 		<div class="row">
 			<div class="col-lg-12">
 				<h1 class="page-header">Data Lokasi</h1>
@@ -28,15 +57,17 @@
 								<div class="col-md-5">
 									<div class="col-md-12">
 										<label>Nama Lokasi</label>
-										<input type="hidden" name="aksi" value="simpan">
-										<input type="hidden" name="id_lokasi" value="">
-										<input type="text" id="nama_lokasi" name="nama_lokasi" class="form-control" placeholder="Telusuri Lokasi">
+										<input type="hidden" name="aksi" value="<?php echo $aksi ?>">
+										<input type="hidden" name="id_lokasi" value="<?php echo $id_lokasi ?>">
+										<input type="text" id="nama_lokasi" name="nama_lokasi" class="form-control" placeholder="Telusuri Lokasi" value="<?php echo $nama_lokasi ?>">
 										<label>Kendaraan</label>
 										<select class="form-control" name="kendaraan" id="kendaraan">
+											<?php if($id_lokasi == null) :?>
 											<option value="0">-- Pilih Kendaraan --</option>
-											<?php 
-											include_once 'config/dao.php';
-											$dao = new Dao();
+											<?php else : ?>
+											<option value="<?php echo $kendaraan ?>"><?php echo $merk.' - '.$pengguna; ?></option>
+											<?php endif; ?>
+											<?php
 											$data = $dao->view('kendaraan');
 											foreach ($data as $value) {
 												echo '<option value="'.$value['id'].'">'.$value['merk'].' ('.$value['plat_nomor'].') - '.$value['pengguna'].'</option>';
@@ -44,12 +75,12 @@
 											?>
 										</select>
 										<label>Latitude</label>
-										<input type="text" id="lat" name="lat" class="form-control" placeholder="Latitude" readonly="yes">
+										<input type="text" id="lat" name="lat" class="form-control" placeholder="Latitude" readonly="yes" value="<?php echo $lat ?>">
 										<label>Longitude</label>
-										<input type="text" id="lng" name="lng" class="form-control" placeholder="Longitude" readonly="yes">
+										<input type="text" id="lng" name="lng" class="form-control" placeholder="Longitude" readonly="yes" value="<?php echo $lng ?>">
 										<label>Radius</label>
 										<div class="input-group">
-											<input type="text" id="radius" name="radius" class="form-control" placeholder="Radius" aria-describedby="basic-addon2">
+											<input type="text" id="radius" value="<?php echo $radius ?>" name="radius" class="form-control" placeholder="Radius" aria-describedby="basic-addon2">
 											<span class="input-group-addon" id="basic-addon2">Km</span>
 										</div>
 									</div>
