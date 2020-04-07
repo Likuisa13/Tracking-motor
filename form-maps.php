@@ -16,6 +16,15 @@
 		<?php
 		include_once 'config/dao.php';
 		$dao = new Dao(); 
+		$aksi = 'simpan';
+		$id_lokasi = '';
+		$nama_lokasi= '';
+		$kendaraan= '';
+		$lat= '';
+		$lng= '';
+		$radius= '';
+		$merk= '';
+		$pengguna= '';
 		if (!empty($_GET['id'])) {
 			$id_lokasi = $_GET['id'];
 			$aksi = 'edit';
@@ -30,18 +39,6 @@
 			$merk = $result['merk'];
 			$pengguna = $result['pengguna'];
 		}
-		else{
-			$aksi = 'simpan';
-			$id_lokasi;
-			$nama_lokasi;
-			$kendaraan;
-			$lat;
-			$lng;
-			$radius;
-			$merk;
-			$pengguna;
-		}
-
 		?>
 		<div class="row">
 			<div class="col-lg-12">
@@ -63,164 +60,182 @@
 										<label>Kendaraan</label>
 										<select class="form-control" name="kendaraan" id="kendaraan">
 											<?php if($id_lokasi == null) :?>
-											<option value="0">-- Pilih Kendaraan --</option>
-											<?php else : ?>
-											<option value="<?php echo $kendaraan ?>"><?php echo $merk.' - '.$pengguna; ?></option>
-											<?php endif; ?>
-											<?php
-											$data = $dao->view('kendaraan');
-											foreach ($data as $value) {
-												echo '<option value="'.$value['id'].'">'.$value['merk'].' ('.$value['plat_nomor'].') - '.$value['pengguna'].'</option>';
-											}
-											?>
-										</select>
-										<label>Latitude</label>
-										<input type="text" id="lat" name="lat" class="form-control" placeholder="Latitude" readonly="yes" value="<?php echo $lat ?>">
-										<label>Longitude</label>
-										<input type="text" id="lng" name="lng" class="form-control" placeholder="Longitude" readonly="yes" value="<?php echo $lng ?>">
-										<label>Radius</label>
-										<div class="input-group">
-											<input type="text" id="radius" value="<?php echo $radius ?>" name="radius" class="form-control" placeholder="Radius" aria-describedby="basic-addon2">
-											<span class="input-group-addon" id="basic-addon2">Km</span>
+												<option value="0">-- Pilih Kendaraan --</option>
+												<?php else : ?>
+													<option value="<?php echo $kendaraan ?>"><?php echo $merk.' - '.$pengguna; ?></option>
+												<?php endif; ?>
+												<?php
+												$data = $dao->view('kendaraan');
+												foreach ($data as $value) {
+													echo '<option value="'.$value['id'].'">'.$value['merk'].' ('.$value['plat_nomor'].') - '.$value['pengguna'].'</option>';
+												}
+												?>
+											</select>
+											<label>Latitude</label>
+											<input type="text" id="lat" name="lat" class="form-control" placeholder="Latitude" readonly="yes" value="<?php echo $lat ?>">
+											<label>Longitude</label>
+											<input type="text" id="lng" name="lng" class="form-control" placeholder="Longitude" readonly="yes" value="<?php echo $lng ?>">
+											<label>Radius</label>
+											<div class="input-group">
+												<input type="text" id="radius" value="<?php echo $radius ?>" name="radius" class="form-control" placeholder="Radius" aria-describedby="basic-addon2">
+												<span class="input-group-addon" id="basic-addon2">Km</span>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<br>
+											<button class="btn btn-block btn-danger" type="button" id="kembali"><i class="fa fa-mail-reply"></i> Kembali</button>
+										</div>
+										<div class="col-md-6">
+											<br>
+											<button class="btn btn-block btn-primary" type="button" id="simpan"><i class="fa fa-save"></i> Simpan</button>
 										</div>
 									</div>
-									<div class="col-md-6">
-										<br>
-										<button class="btn btn-block btn-danger" type="button" id="kembali"><i class="fa fa-mail-reply"></i> Kembali</button>
-									</div>
-									<div class="col-md-6">
-										<br>
-										<button class="btn btn-block btn-primary" type="button" id="simpan"><i class="fa fa-save"></i> Simpan</button>
-									</div>
 								</div>
-							</div>
-						</form>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</body>
-<?php include_once 'template/js.php'; ?>	
-<script>
-	var place;
+	</body>
+	<?php include_once 'template/js.php'; ?>	
+	<script>
+		var place;
 
-	function initMap() {
-		var map = new google.maps.Map(document.getElementById('googleMap'), {
-			center: {lat: -7.782894799999976, lng: 110.36702461349182},
-			zoom: 13
-		});
-		var input = document.getElementById('nama_lokasi');
+		function initMap() {
+			var map, center;
+			var lati = parseFloat(document.getElementById('lat').value); 
+			var longi = parseFloat(document.getElementById('lng').value); 
+			var input = document.getElementById('nama_lokasi');
 
-		var autocomplete = new google.maps.places.Autocomplete(input);
-		autocomplete.bindTo('bounds', map);
-
-		var marker = new google.maps.Marker({
-			map: map,
-			draggable: true,
-			anchorPoint: new google.maps.Point(0, -29)
-		});
-
-		autocomplete.addListener('place_changed', function() {
-			marker.setVisible(false);
-			place = autocomplete.getPlace();
-
-			if (place.geometry.viewport) {
-				map.fitBounds(place.geometry.viewport);
-			} else {
-				map.setCenter(place.geometry.location);
-				map.setZoom(15);
+			if(lati == '' && longi == ''){
+				map = new google.maps.Map(document.getElementById('googleMap'), {
+					center: {lat: -7.782894799999976, lng: 110.36702461349182},
+					zoom: 13
+				});
+			}
+			else{
+				map = new google.maps.Map(document.getElementById('googleMap'), {
+					center: {lat: lati, lng: longi},
+					zoom: 13
+				});
+				center = new google.maps.LatLng(lati,longi);
 			}
 
-			marker.setPosition(place.geometry.location);
+			var autocomplete = new google.maps.places.Autocomplete(input);
+			autocomplete.bindTo('bounds', map);
+
+			var marker = new google.maps.Marker({
+				map: map,
+				draggable: true,
+				anchorPoint: new google.maps.Point(0, -29)
+			});
+			if(lati != '' && longi != ''){
+				marker.setPosition(center);
+			}
+
+			autocomplete.addListener('place_changed', function() {
+				marker.setVisible(false);
+				place = autocomplete.getPlace();
+
+				if (place.geometry.viewport) {
+					map.fitBounds(place.geometry.viewport);
+				} else {
+					map.setCenter(place.geometry.location);
+					map.setZoom(15);
+				}
+				
+				marker.setPosition(place.geometry.location);
+				marker.setVisible(true);
+
+				var address = '';
+				if (place.address_components) {
+					address = [
+					(place.address_components[0] && place.address_components[0].short_name || ''),
+					(place.address_components[1] && place.address_components[1].short_name || ''),
+					(place.address_components[2] && place.address_components[2].short_name || '')
+					].join(' ');
+				}
+
+				$('#lat').val(place.geometry.location.lat());
+				$('#lng').val(place.geometry.location.lng());
+				document.getElementById("radius").readOnly = false;
+				google.maps.event.addListener(marker, 'dragend', function(event) {
+					marker.getPosition().lat();
+					$('#lat').val(marker.getPosition().lat());
+					$('#lng').val(marker.getPosition().lng());   
+				});
+			});
+		}
+
+
+		function initialize() {
+			var lati = document.getElementById('lat').value; 
+			var longi = document.getElementById('lng').value; 
+			var rad = document.getElementById('radius').value;
+			var citymap = new google.maps.LatLng(lati,longi);
+			var cityCircle, center;
+			if (lati != '' && longi != '') {
+				center = new google.maps.LatLng(lati,longi);
+			}
+			var mapOptions = {
+				zoom: 15,
+				center: new google.maps.LatLng(lati,longi),
+			};
+
+			var map = new google.maps.Map(document.getElementById('googleMap'),
+				mapOptions);
+
+			var marker = new google.maps.Marker({
+				position: center,
+				map: map,
+				draggable: true,
+				anchorPoint: new google.maps.Point(0, -29)
+			});
+
+			if (rad > 10)
+				map.setZoom(11);
+			else if(rad > 3)
+				map.setZoom(13);
+			else
+				map.setZoom(15);
+
 			marker.setVisible(true);
 
-			var address = '';
-			if (place.address_components) {
-				address = [
-				(place.address_components[0] && place.address_components[0].short_name || ''),
-				(place.address_components[1] && place.address_components[1].short_name || ''),
-				(place.address_components[2] && place.address_components[2].short_name || '')
-				].join(' ');
-			}
-
-			$('#lat').val(place.geometry.location.lat());
-			$('#lng').val(place.geometry.location.lng());
-			document.getElementById("radius").readOnly = false;
-			google.maps.event.addListener(marker, 'dragend', function(event) {
-				marker.getPosition().lat();
-				$('#lat').val(marker.getPosition().lat());
-				$('#lng').val(marker.getPosition().lng());   
-			});
-		});
-	}
-
-
-	function initialize() {
-		var lati = document.getElementById('lat').value; 
-		var longi = document.getElementById('lng').value; 
-		var rad = document.getElementById('radius').value;
-		var citymap = new google.maps.LatLng(lati,longi);
-		var cityCircle;
-
-		var mapOptions = {
-			zoom: 15,
-			center: new google.maps.LatLng(lati,longi),
-		};
-
-		var map = new google.maps.Map(document.getElementById('googleMap'),
-			mapOptions);
-
-		var marker = new google.maps.Marker({
-			map: map,
-			draggable: true,
-			anchorPoint: new google.maps.Point(0, -29)
-		});
-
-		if (rad > 10)
-			map.setZoom(11);
-		else if(rad > 3)
-			map.setZoom(13);
-		else
-			map.setZoom(15);
-
-		marker.setPosition(place.geometry.location);
-		marker.setVisible(true);
-
-		var populationOptions = {
-			strokeColor: '#6495ED',
-			strokeOpacity: 0.8,
-			strokeWeight: 1,
-			fillColor: '#6495ED',
-			fillOpacity: 0.15,
-			map: map,
-			center: citymap,
-			radius: rad * 1000
-		};
-		cityCircle = new google.maps.Circle(populationOptions); 
-	}
-
-	$('#radius').keyup(function(){
-		if ($('#nama_lokasi').val() != ''){
-			initialize();
+			var populationOptions = {
+				strokeColor: '#6495ED',
+				strokeOpacity: 0.8,
+				strokeWeight: 1,
+				fillColor: '#6495ED',
+				fillOpacity: 0.15,
+				map: map,
+				center: citymap,
+				radius: rad * 1000
+			};
+			cityCircle = new google.maps.Circle(populationOptions); 
 		}
-	});
 
-	if ($('#nama_lokasi').val() == '') {
-		document.getElementById("radius").readOnly = true;
-	}
-	else{
-		document.getElementById("radius").readOnly = false;
-	}
+		$('#radius').keyup(function(){
+			if ($('#nama_lokasi').val() != ''){
+				initialize();
+			}
+		});
 
-	$('#simpan').click(function(){
-		$('#input-data').submit();
-	});
+		if ($('#nama_lokasi').val() == '') {
+			document.getElementById("radius").readOnly = true;
+		}
+		else{
+			document.getElementById("radius").readOnly = false;
+		}
 
-	$('#kembali').click(function(){
-		window.location = "maps";
-	});
+		$('#simpan').click(function(){
+			$('#input-data').submit();
+		});
 
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuqp6YJymNF8Et7Xvd6SO3sBYqu2Bkc88&libraries=places&callback=initMap"></script>
-</html>
+		$('#kembali').click(function(){
+			window.location = "maps";
+		});
+
+	</script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuqp6YJymNF8Et7Xvd6SO3sBYqu2Bkc88&libraries=places&callback=initMap"></script>
+	</html>
