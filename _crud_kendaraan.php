@@ -17,6 +17,10 @@ elseif ($_POST['aksi'] == 'edit') {
 	$pengguna = $_POST['pengguna'];
 	$query = "UPDATE `kendaraan` SET `merk`='$merk',`plat_nomor`='$plat_nomor',`pengguna`='$pengguna' WHERE `id` = '$id'";
 }
+elseif ($_POST['aksi'] == 'delete') {
+	$id = $_POST['id_kendaraan'];
+	$query = "DELETE FROM `kendaraan` WHERE `id` = '$id'";
+}
 // var_dump($query);die;
 $dao->execute($query);
 

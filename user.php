@@ -21,6 +21,12 @@
 		$('#tombol').text('Edit');
 		$('#ModalUser').modal('show');
 	}
+	function del(id,nama) {
+		$('#aksi_del').val('delete');
+		$('#id_del').val(id);
+		$('#nama_del').text(nama);
+		$('#delUser').modal('show');
+	}
 
 </script>
 <body>
@@ -60,7 +66,7 @@
 								$no = 1;
 								foreach ($result as $value) { 
 									$edit = "'".$value['id']."','".$value['nama']."','".$value['username']."'";
-									$delete = "'".$value['id']."','".$value['nama']."'";
+									$del = "'".$value['id']."','".$value['nama']."'";
 									?>
 									<tr>
 										<td><?php echo $no; $no++; ?></td>
@@ -70,7 +76,7 @@
 										<!-- <td><?php echo $value['roles'] ?></td> -->
 										<td nowrap="">
 											<button class="btn btn-sm btn-warning" onclick="edit(<?php echo $edit ?>);"><i class="fa fa-edit"></i> Edit</button>
-											<button class="btn btn-sm btn-danger"><i class="fa fa-edit"></i> Delete</button>
+											<button class="btn btn-sm btn-danger" onclick="del(<?php echo $del ?>)"><i class="fa fa-edit"></i> Delete</button>
 										</td>
 									</tr>
 								<?php } ?>
@@ -82,7 +88,7 @@
 		</div><!--/.row-->
 	</div>
 
-	<!-- Modal -->
+	<!-- Modal Add/Edit-->
 	<div class="modal fade" id="ModalUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -116,6 +122,32 @@
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 						<button type="submit" class="btn btn-primary"><span id="tombol"></span></button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- End Modal Add/Edit -->
+	<!-- Modal Delete-->
+	<div class="modal fade" id="delUser" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h5 class="modal-title" id="exampleModalLabel"><center><strong>Delete User</strong></center></h5>
+				</div>
+				<div class="modal-body">
+					<form action="_crud_user" method="post">
+						<center><h4>Yakin Delete Data?</h4></center>
+						<center><h2>User <span class="badge bg-red" style="font-size: 20px" id="nama_del"></span></h2></center>
+						<input type="hidden" name="aksi" id="aksi_del">
+						<input type="hidden" name="id_user" id="id_del">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn btn-primary">Delete</button>
 					</div>
 				</form>
 			</div>

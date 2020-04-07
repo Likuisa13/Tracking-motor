@@ -41,7 +41,7 @@
 											foreach ($data as $value) {
 												echo '<option value="'.$value['id'].'">'.$value['merk'].' ('.$value['plat_nomor'].') - '.$value['pengguna'].'</option>';
 											}
-											 ?>
+											?>
 										</select>
 										<label>Latitude</label>
 										<input type="text" id="lat" name="lat" class="form-control" placeholder="Latitude" readonly="yes">
@@ -55,7 +55,7 @@
 									</div>
 									<div class="col-md-6">
 										<br>
-										<a href="maps"><button class="btn btn-block btn-danger" type="button"><i class="fa fa-mail-reply"></i> Kembali</button></a>
+										<button class="btn btn-block btn-danger" type="button" id="kembali"><i class="fa fa-mail-reply"></i> Kembali</button>
 									</div>
 									<div class="col-md-6">
 										<br>
@@ -186,6 +186,9 @@
 		$('#input-data').submit();
 	});
 
+	$('#kembali').click(function(){
+		window.location = "maps";
+	});
 
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuqp6YJymNF8Et7Xvd6SO3sBYqu2Bkc88&libraries=places&callback=initMap"></script>

@@ -22,6 +22,13 @@
 		$('#ModalKendaraan').modal('show');
 	}
 
+	function del(id,merk) {
+		$('#aksi_del').val('delete');
+		$('#id_del').val(id);
+		$('#merk_del').text(merk);
+		$('#delKendaraan').modal('show');
+	}
+
 </script>
 <body>
 	<?php include_once 'template/nav.php'; ?>
@@ -59,6 +66,7 @@
 								$no = 1;
 								foreach ($result as $value) { 
 									$edit = "'".$value['id']."','".$value['merk']."','".$value['plat_nomor']."','".$value['pengguna']."'";
+									$del = "'".$value['id']."','".$value['merk']."'";
 									?>
 									<tr>
 										<td><?php echo $no; $no++; ?></td>
@@ -67,7 +75,7 @@
 										<td><?php echo $value['pengguna'] ?></td>
 										<td nowrap="">
 											<button class="btn btn-sm btn-warning" onclick="edit(<?php echo $edit ?>)"><i class="fa fa-edit"></i> Edit</button>
-											<button class="btn btn-sm btn-danger"><i class="fa fa-edit"></i> Delete</button>
+											<button class="btn btn-sm btn-danger" onclick="del(<?php echo $del; ?>)"><i class="fa fa-edit"></i> Delete</button>
 										</td>
 									</tr>
 								<?php } ?>
@@ -79,7 +87,7 @@
 		</div>
 	</div>
 
-	<!-- Modal -->
+	<!-- Modal Add/edit-->
 	<div class="modal fade" id="ModalKendaraan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -87,7 +95,7 @@
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h5 class="modal-title">Data Kendaraan</h5>
+					<h5 class="modal-title"><center><strong>Data Kendaraan</strong></center></h5>
 				</div>
 				<div class="modal-body">
 					<form action="_crud_kendaraan" method="post">
@@ -111,8 +119,34 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
 						<button type="submit" class="btn btn-primary"><span id="tombol"></span></button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- End Modal Add/Edit -->
+	<!-- Modal Delete-->
+	<div class="modal fade" id="delKendaraan" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h5 class="modal-title" id="exampleModalLabel"><center><strong>Delete Kendaraan</strong></center></h5>
+				</div>
+				<div class="modal-body">
+					<form action="_crud_kendaraan" method="post">
+						<center><h4>Yakin Delete Data?</h4></center>
+						<center><h2>Motor <span class="badge bg-red" style="font-size: 20px" id="merk_del"></span></h2></center>
+						<input type="hidden" name="aksi" id="aksi_del">
+						<input type="hidden" name="id_kendaraan" id="id_del">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn btn-primary">Delete</button>
 					</div>
 				</form>
 			</div>

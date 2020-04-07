@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html>
 <?php include_once 'template/head.php'; ?>
+<script>
+	function del(id,nama_lokasi) {
+		$('#aksi_del').val('delete');
+		$('#id_del').val(id);
+		$('#nama_lokasi').text(nama_lokasi);
+		$('#delMaps').modal('show');
+	}
+</script>
 <body>
 	<?php include_once 'template/nav.php'; ?>
 	<?php include_once 'template/sidebar.php'; ?>
@@ -36,7 +44,9 @@
 								$dao = new Dao();
 								$result = $dao->viewMaps();
 								$no = 1;
-								foreach ($result as $value) { ?>
+								foreach ($result as $value) { 
+									$del = "'".$value['id']."','".$value['nama_lokasi']."'";
+									?>
 									<tr>
 										<td><?php echo $no; $no++; ?></td>
 										<td><?php echo $value['merk'].' ('.$value['plat_nomor'].')' ?></td>
@@ -45,7 +55,7 @@
 										<td><?php echo $value['batas'].' Km' ?></td>
 										<td nowrap="">
 											<button class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Edit</button>
-											<button class="btn btn-sm btn-danger"><i class="fa fa-edit"></i> Delete</button>
+											<button class="btn btn-sm btn-danger" onclick="del(<?php echo $del ?>)"><i class="fa fa-edit"></i> Delete</button>
 										</td>
 									</tr>
 								<?php } ?>
@@ -54,7 +64,32 @@
 					</div>
 				</div>
 			</div>
-		</div><!--/.row-->
+		</div>
+	</div>
+	<!-- Modal Delete-->
+	<div class="modal fade" id="delMaps" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h5 class="modal-title" id="exampleModalLabel"><center><strong>Delete Kendaraan</strong></center></h5>
+				</div>
+				<div class="modal-body">
+					<form action="_crud_maps" method="post">
+						<center><h4>Yakin Delete Data?</h4></center>
+						<center><p class="" style="font-size: 20px; background-color: red;border-radius: 5px; color: white" id="nama_lokasi"></p></center>
+						<input type="hidden" name="aksi" id="aksi_del">
+						<input type="hidden" name="id_lokasi" id="id_del">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn btn-primary">Delete</button>
+					</div>
+				</form>
+			</div>
+		</div>
 	</div>
 	<?php include_once 'template/js.php'; ?>	
 </body>

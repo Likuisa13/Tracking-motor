@@ -17,6 +17,10 @@ elseif ($_POST['aksi'] == 'edit') {
 	$password = $_POST['password'];
 	$query = "UPDATE `users` SET `nama`='$nama',`username`='$username',`password`=PASSWORD('$password') WHERE `id` = '$id'";
 }
+elseif ($_POST['aksi'] == 'delete') {
+	$id = $_POST['id_user'];
+	$query = "DELETE FROM `users` WHERE `id` = '$id'";
+}
 // var_dump($query);die;
 $dao->execute($query);
 
