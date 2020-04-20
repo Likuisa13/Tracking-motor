@@ -26,14 +26,13 @@ CREATE TABLE `kendaraan` (
   `plat_nomor` varchar(10) DEFAULT NULL,
   `pengguna` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `kendaraan` */
 
 insert  into `kendaraan`(`id`,`merk`,`plat_nomor`,`pengguna`) values 
 (1,'Supra 125','AB 1002 NB','Mita'),
-(2,'Vario 110','AB 3455 RB','Martin'),
-(3,'Mio J','AB 1124 NB','Ibu');
+(2,'Vario 110','AB 3455 RB','Martin');
 
 /*Table structure for table `lokasi` */
 
@@ -42,18 +41,21 @@ DROP TABLE IF EXISTS `lokasi`;
 CREATE TABLE `lokasi` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_kendaraan` int(11) NOT NULL,
+  `nama_lokasi` varchar(200) DEFAULT NULL,
   `latitude` varchar(20) DEFAULT NULL,
   `longitude` varchar(20) DEFAULT NULL,
   `batas` double DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `id_kendaraan` (`id_kendaraan`),
-  CONSTRAINT `lokasi_ibfk_1` FOREIGN KEY (`id_kendaraan`) REFERENCES `kendaraan` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+  KEY `lokasi_ibfk_1` (`id_kendaraan`),
+  CONSTRAINT `lokasi_ibfk_1` FOREIGN KEY (`id_kendaraan`) REFERENCES `kendaraan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `lokasi` */
 
-insert  into `lokasi`(`id`,`id_kendaraan`,`latitude`,`longitude`,`batas`) values 
-(1,1,'-7.782811','110.367002',4);
+insert  into `lokasi`(`id`,`id_kendaraan`,`nama_lokasi`,`latitude`,`longitude`,`batas`) values 
+(1,1,'Tugu Yogyakarta, Jl. Tugu, Gowongan, Yogyakarta City, Special Region of Yogyakarta, Indonesia','-7.782894799999999','110.3670568',4),
+(2,2,'University of Technology Yogyakarta, Jl. Ring Road Utara Jalan Jombor Lor, Mlati Krajan, Sendangadi, Sleman Regency, Special Region of Yogyakarta, Indonesia','-7.747438','110.355399',5),
+(5,1,'Trihanggo, Sleman Regency, Special Region of Yogyakarta, Indonesia','-7.753322099999998','110.3457756',5);
 
 /*Table structure for table `riwayat` */
 
@@ -61,6 +63,7 @@ DROP TABLE IF EXISTS `riwayat`;
 
 CREATE TABLE `riwayat` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `waktu` timestamp NULL DEFAULT current_timestamp(),
   `id_lokasi` int(11) DEFAULT NULL,
   `latitude_now` varchar(20) DEFAULT NULL,
   `longitude_now` varchar(20) DEFAULT NULL,
@@ -69,13 +72,17 @@ CREATE TABLE `riwayat` (
   PRIMARY KEY (`id`),
   KEY `id_lokasi` (`id_lokasi`),
   CONSTRAINT `riwayat_ibfk_1` FOREIGN KEY (`id_lokasi`) REFERENCES `lokasi` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `riwayat` */
 
-insert  into `riwayat`(`id`,`id_lokasi`,`latitude_now`,`longitude_now`,`jarak_now`,`status`) values 
-(1,1,'-7.749381','110.355452',3,'Di Izinkan'),
-(2,1,'-7.749381','-7.749381',5,'Di Larang');
+insert  into `riwayat`(`id`,`waktu`,`id_lokasi`,`latitude_now`,`longitude_now`,`jarak_now`,`status`) values 
+(1,'2020-03-13 20:20:29',1,'-7.749381','110.355452',3.8,'Di Izinkan'),
+(2,'2020-03-14 20:20:29',1,'-7.749381','110.3889823',5,'Di Larang'),
+(3,'2020-03-13 20:20:29',2,'-7.720245547307145','110.36131698650821',3,'Di Izinkan'),
+(4,'2020-03-14 20:20:29',2,'-7.794314600000001','110.3656081',5.5,'Di Larang'),
+(5,'2020-03-22 15:30:24',1,'-7.78444444','110.3670568',0.17,'Di Izinkan'),
+(6,'2020-03-22 15:30:31',1,'-7.78444444','110.3670568',3,'Di Izinkan');
 
 /*Table structure for table `users` */
 
@@ -87,14 +94,14 @@ CREATE TABLE `users` (
   `username` varchar(30) DEFAULT NULL,
   `password` varchar(100) DEFAULT NULL,
   `roles` enum('admin','pengguna') DEFAULT NULL,
-  `is_login` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `users` */
 
-insert  into `users`(`id`,`nama`,`username`,`password`,`roles`,`is_login`) values 
-(1,'Administrator','admin','*4ACFE3202A5FF5CF467898FC58AAB1D615029441  ','admin',NULL);
+insert  into `users`(`id`,`nama`,`username`,`password`,`roles`) values 
+(1,'Administrator','admin','*4ACFE3202A5FF5CF467898FC58AAB1D615029441  ','admin'),
+(2,'Satria','satria','*19F7DFBF25337CC120A50A74A7C54DF1850423E1','admin');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
