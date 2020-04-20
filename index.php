@@ -100,7 +100,8 @@
 					bounds.extend(pos); 
 					marker = new google.maps.Marker({
 						position: pos,
-						map: map
+						map: map,
+						animation: google.maps.Animation.BOUNCE
 					});
 					google.maps.event.addListener(marker, 'click', (function(marker, i) {
 						return function() {

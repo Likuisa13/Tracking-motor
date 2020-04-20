@@ -28,7 +28,7 @@ class Dao
 
 		public function viewHistory()
 		{
-			$query = "SELECT `riwayat`.*, merk,plat_nomor,pengguna, latitude, longitude, batas FROM `kendaraan`,`lokasi`,`riwayat` WHERE `lokasi`.id_kendaraan = `kendaraan`.id AND `lokasi`.id = `riwayat`.id_lokasi";
+			$query = "SELECT `riwayat`.*, merk,plat_nomor,pengguna,latitude, longitude, nama_lokasi, batas FROM `kendaraan`,`lokasi`,`riwayat` WHERE `lokasi`.id_kendaraan = `kendaraan`.id AND `lokasi`.id = `riwayat`.id_lokasi";
 			return mysqli_query($this->link->conn, $query);	
 		}
 
@@ -71,6 +71,27 @@ class Dao
 				$idx++;
 			}
 			return $all_lokasi;
+		}
+
+		public function getDetailHistory($id){
+			$query = "SELECT `riwayat`.*, merk,plat_nomor,pengguna,latitude, longitude, nama_lokasi, batas FROM `kendaraan`,`lokasi`,`riwayat` WHERE `lokasi`.id_kendaraan = `kendaraan`.id AND `lokasi`.id = `riwayat`.id_lokasi AND `riwayat`.id = '$id'";
+			$result = mysqli_query($this->link->conn, $query);
+			$result = $result->fetch_array();	
+			$riwayat = array();
+			
+			if ($result['status'] == 'Di Izinkan') 
+				$color = 'blue';
+			else
+				$color = 'red';
+			$riwayat[0][0] = '<table><tbody><tr><td colspan="3"><p><h4><strong><center>Lokasi Awal</center></strong></h4></p></td></tr><tr><td width="100px">Lokasi Batas</td><td>:</td><td>'.$result['nama_lokasi'].'</td></tr><tr><td>Radius</td><td>:</td><td>'.$result['batas'].' Km</td></tr></tbody></table>';
+			$riwayat[0][1] = $result['latitude'];
+			$riwayat[0][2] = $result['longitude'];
+			$riwayat[0][3] = $result['batas'];
+			$riwayat[1][0] = '<table><tbody><tr><td colspan="3"><p style="text-align: center;"><h4><strong><center>Lokasi Terkini</center></strong></h4></p><p style="text-align: center;"><span>Status :</spa> <span class="badge" style="background-color: '.$color.';color:white;">'.$result['status'].'</span></p></td></tr><tr><td width="100px">Waktu</td><td>:</td><td width="200px">'.$result['waktu'].'</td><tr><td width="100px">Pengguna</td><td>:</td><td width="200px">'.$result['pengguna'].'</td></tr><tr><td>Motor</td><td width="10px">:</td><td>'.$result['merk'].' ('.$result['plat_nomor'].')'.'</td></tr><tr><td>Jarak</td><td>:</td><td>'.$result['jarak_now'].' Km</td></tr></tbody></table>';
+			$riwayat[1][1] = $result['latitude_now'];
+			$riwayat[1][2] = $result['longitude_now'];
+			$riwayat[1][3] = null;
+			return $riwayat;
 		}
 
 		public function cekJarak($id, $latitude_now, $longitude_now)

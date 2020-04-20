@@ -10,21 +10,23 @@
 				<li><a href="index">
 					<em class="fa fa-home"></em>
 				</a></li>
-				<li class="active">Kendaraan</li>
+				<li><a href="maps">Maps
+				</a></li>
+				<li>Form Maps</li>
 			</ol>
 		</div><!--/.row-->
 		<?php
 		include_once 'config/dao.php';
 		$dao = new Dao(); 
 		$aksi = 'simpan';
-		$id_lokasi = '';
-		$nama_lokasi= '';
-		$kendaraan= '';
-		$lat= '';
-		$lng= '';
-		$radius= '';
-		$merk= '';
-		$pengguna= '';
+		$id_lokasi =null;
+		$nama_lokasi=null;
+		$kendaraan=null;
+		$lat=null;
+		$lng=null;
+		$radius=null;
+		$merk=null;
+		$pengguna=null;
 		if (!empty($_GET['id'])) {
 			$id_lokasi = $_GET['id'];
 			$aksi = 'edit';
@@ -44,7 +46,6 @@
 			<div class="col-lg-12">
 				<h1 class="page-header">Data Lokasi</h1>
 				<div class="panel">
-					<br><h3><center><strong>Data Lokasi</strong></center></h3><br>
 					<div class="panel-body container-fluid">
 						<form action="_crud_maps" method="post" id="input-data">
 							<div class="row">
@@ -107,8 +108,8 @@
 			var lati = parseFloat(document.getElementById('lat').value); 
 			var longi = parseFloat(document.getElementById('lng').value); 
 			var input = document.getElementById('nama_lokasi');
-
-			if(lati == '' && longi == ''){
+			
+			if(isNaN(lati) && isNaN(longi)){
 				map = new google.maps.Map(document.getElementById('googleMap'), {
 					center: {lat: -7.782894799999976, lng: 110.36702461349182},
 					zoom: 13

@@ -22,13 +22,13 @@
 						<table class="table table-striped">
 							<thead style="background-color: #1E90FF; color:white;" class="text-center">
 								<th><center>No</center></th>
-								<th><center>Motor</center></th>
-								<th><center>Pengguna</center></th>
-								<th><center>Koordinat Awal<br>(Lat, Long)</center></th>
-								<th><center>Batas</center></th>
-								<th><center>Koordinat Terkini<br>(Lat, Long)</center></th>
-								<th><center>Jarak Dari<br>Koordinat Awal</center></th>
-								<th><center>Status</center></th>
+								<th>Waktu</th>
+								<th>Motor</th>
+								<th>Pengguna</th>
+								<th width="400px">Koordinat Awal</th>
+								<th>Jarak Dari<br>Koordinat Awal</th>
+								<th>Status</th>
+								<th></th>
 							</thead>
 							<tbody>
 								<?php 
@@ -39,11 +39,10 @@
 								foreach ($result as $value) { ?>
 									<tr>
 										<td><?php echo $no; $no++; ?></td>
+										<td><?php echo $value['waktu'] ?></td>
 										<td><?php echo $value['merk'].' ('.$value['plat_nomor'].')' ?></td>
 										<td><?php echo $value['pengguna'] ?></td>
-										<td><?php echo $value['latitude'].', '.$value['longitude'] ?></td>
-										<td><?php echo $value['batas'].' Km' ?></td>
-										<td><?php echo $value['latitude_now'].', '.$value['longitude_now'] ?></td>
+										<td><?php echo $value['nama_lokasi'] ?></td>
 										<td><?php echo $value['jarak_now'].' Km' ?></td>
 										<?php if ($value['status'] == 'Di Izinkan'): ?>
 											<td><span class="badge" style="background-color: blue;"><?php echo $value['status'] ?></span></td>
@@ -51,6 +50,7 @@
 										<?php if ($value['status'] == 'Di Larang'): ?>
 											<td><span class="badge" style="background-color: red;color:white;"><?php echo $value['status'] ?></span></td>
 										<?php endif ?>
+										<td><center><a href="detail-history?id=<?=$value['id']?>"><button class="btn btn-link btn-sm"><em class="fa fa-mail-forward">&nbsp;</em>Detail</button></a></center></td>
 									</tr>
 								<?php } ?>
 							</tbody>
