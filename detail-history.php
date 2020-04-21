@@ -18,7 +18,11 @@
 	<?php
 	include_once 'config/dao.php';
 	$dao = new Dao();
+	if ($_GET['id'] == null) {
+		# code...
+	}
 	$id = $_GET['id'];
+	$img_dir = $dao->getBaseUrl();
 	?>
 	<div class="row">
 		<div class="col-lg-12">
@@ -52,17 +56,26 @@
 			center: {lat: -7.782894799999976, lng: 110.36702461349182},
 			zoom: 13
 		}     
+		var url_image;
 		var map = new google.maps.Map(mapCanvas, mapOptions)
 
 		var infowindow = new google.maps.InfoWindow({maxWidth: 400}), marker, i;
 		var bounds = new google.maps.LatLngBounds(); 
 		for (i = 0; i < markers.length; i++) {  
+			if (i == 0) 
+				url_image = 'http://localhost/tracking/img/icon_home.png';
+			else
+				url_image = 'http://localhost/tracking/img/icon_motor.png';
+			var image = {
+				url: url_image,
+			};
 			var rad = markers[i][3];
 			pos = new google.maps.LatLng(markers[i][1], markers[i][2]);
 			bounds.extend(pos); 
 			marker = new google.maps.Marker({
 				position: pos,
 				map: map,
+				icon: image
 			});
 
 			var populationOptions = {

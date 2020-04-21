@@ -92,7 +92,10 @@
 					zoom: 13
 				}     
 				var map = new google.maps.Map(mapCanvas, mapOptions)
-
+				var url_image = 'http://localhost/tracking/img/icon_motor.png';
+				var image = {
+					url: url_image,
+				};
 				var infowindow = new google.maps.InfoWindow({maxWidth: 400}), marker, i;
 				var bounds = new google.maps.LatLngBounds(); 
 				for (i = 0; i < markers.length; i++) {  
@@ -101,7 +104,8 @@
 					marker = new google.maps.Marker({
 						position: pos,
 						map: map,
-						animation: google.maps.Animation.BOUNCE
+						icon: image,
+						animation: google.maps.Animation.DROP
 					});
 					google.maps.event.addListener(marker, 'click', (function(marker, i) {
 						return function() {
