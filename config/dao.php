@@ -29,7 +29,7 @@ class Dao
 
 	public function viewHistory()
 	{
-		$query = "SELECT `riwayat`.*, merk,plat_nomor,pengguna,latitude, longitude, nama_lokasi, batas FROM `kendaraan`,`lokasi`,`riwayat` WHERE `lokasi`.id_kendaraan = `kendaraan`.id AND `lokasi`.id = `riwayat`.id_lokasi";
+		$query = "SELECT `riwayat`.*, merk,plat_nomor,pengguna,latitude, longitude, nama_lokasi, batas FROM `kendaraan`,`lokasi`,`riwayat` WHERE `lokasi`.id_kendaraan = `kendaraan`.id AND `lokasi`.id = `riwayat`.id_lokasi ORDER BY waktu DESC";
 		return mysqli_query($this->link->conn, $query);	
 	}
 

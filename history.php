@@ -19,13 +19,13 @@
 				<h1 class="page-header">History</h1>
 				<div class="panel">
 					<div class="panel-body container-fluid">
-						<table class="table table-striped">
+						<table class="table table-striped" id="riwayat">
 							<thead style="background-color: #1E90FF; color:white;" class="text-center">
 								<th><center>No</center></th>
 								<th>Waktu</th>
 								<th>Motor</th>
 								<th>Pengguna</th>
-								<th width="400px">Koordinat Awal</th>
+								<th width="300px">Koordinat Awal</th>
 								<th>Jarak Dari<br>Koordinat Awal</th>
 								<th>Status</th>
 								<th></th>
