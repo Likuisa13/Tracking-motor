@@ -14,7 +14,7 @@
 				</a></li>
 				<li>Form Maps</li>
 			</ol>
-		</div><!--/.row-->
+		</div>
 		<?php
 		include_once 'config/dao.php';
 		$dao = new Dao(); 
@@ -27,6 +27,7 @@
 		$radius=null;
 		$merk=null;
 		$pengguna=null;
+		$status=null;
 		if (!empty($_GET['id'])) {
 			$id_lokasi = $_GET['id'];
 			$aksi = 'edit';
@@ -40,6 +41,7 @@
 			$radius = $result['batas'];
 			$merk = $result['merk'];
 			$pengguna = $result['pengguna'];
+			$status = $result['status'];
 		}
 		?>
 		<div class="row">
@@ -72,15 +74,32 @@
 												}
 												?>
 											</select>
-											<label>Latitude</label>
-											<input type="text" id="lat" name="lat" class="form-control" placeholder="Latitude" readonly="yes" value="<?php echo $lat ?>">
-											<label>Longitude</label>
-											<input type="text" id="lng" name="lng" class="form-control" placeholder="Longitude" readonly="yes" value="<?php echo $lng ?>">
+											<!-- <label>Latitude</label> -->
+											<input type="hidden" id="lat" name="lat" class="form-control" placeholder="Latitude" readonly="yes" value="<?php echo $lat ?>">
+											<!-- <label>Longitude</label> -->
+											<input type="hidden" id="lng" name="lng" class="form-control" placeholder="Longitude" readonly="yes" value="<?php echo $lng ?>">
 											<label>Radius</label>
 											<div class="input-group">
 												<input type="text" id="radius" value="<?php echo $radius ?>" name="radius" class="form-control" placeholder="Radius" aria-describedby="basic-addon2">
 												<span class="input-group-addon" id="basic-addon2">Km</span>
 											</div>
+											<label>Status</label>
+											<select class="form-control" name="status">
+												<?php 
+												if($status == null || $status == '1'){
+													?>
+													<option value="1">Aktif</option>
+													<option value="0">Non-aktif</option>
+													<?php
+												}else{
+													?>
+													<option value="0">Non-aktif</option>
+													<option value="1">Aktif</option>
+													<?php
+												}
+												?>
+												
+											</select>
 										</div>
 										<div class="col-md-6">
 											<br>

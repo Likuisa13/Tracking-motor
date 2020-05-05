@@ -76,8 +76,8 @@
 		<div class="divider"></div>
 		<ul class="nav menu">
 			<li id="menu-dashboard"><a href="index"><em class="fa fa-dashboard">&nbsp;</em> Dashboard</a></li>
-			<li id="menu-maps"><a href="maps"><em class="fa fa-map-marker">&nbsp;</em> Batas Area</a></li>
 			<li id="menu-alat"><a href="kendaraan"><em class="fa fa-motorcycle">&nbsp;</em> Kendaraan</a></li>
+			<li id="menu-maps"><a href="maps"><em class="fa fa-map-marker">&nbsp;</em> Batas Area</a></li>
 			<li id="menu-history"><a href="history"><em class="fa fa-bar-chart">&nbsp;</em> History</a></li>
 			<li id="menu-user"><a href="user"><em class="fa fa-users">&nbsp;</em> User</a></li>
 			<li><a href="logout"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>

@@ -23,13 +23,13 @@ class Dao
 
 	public function viewMaps()
 	{
-		$query = "SELECT `lokasi`.*, merk,plat_nomor,pengguna FROM `kendaraan`,`lokasi` WHERE `lokasi`.id_kendaraan = `kendaraan`.id";
+		$query = "SELECT `lokasi`.*, merk,plat_nomor,pengguna FROM `kendaraan`,`lokasi` WHERE `lokasi`.id_kendaraan = `kendaraan`.id ORDER BY `lokasi`.updated_at DESC";
 		return mysqli_query($this->link->conn, $query);	
 	}
 
 	public function viewHistory()
 	{
-		$query = "SELECT `riwayat`.*, merk,plat_nomor,pengguna,latitude, longitude, nama_lokasi, batas FROM `kendaraan`,`lokasi`,`riwayat` WHERE `lokasi`.id_kendaraan = `kendaraan`.id AND `lokasi`.id = `riwayat`.id_lokasi ORDER BY waktu DESC";
+		$query = "SELECT * FROM `riwayat` ORDER BY waktu DESC";
 		return mysqli_query($this->link->conn, $query);	
 	}
 
@@ -42,7 +42,7 @@ class Dao
 
 	public function getLokasi()
 	{
-		$query = "SELECT MAX(id) as id FROM riwayat GROUP BY id_lokasi ORDER BY waktu DESC";
+		$query = "SELECT MAX(id) as id FROM riwayat GROUP BY plat_nomor ORDER BY waktu DESC";
 		$id = mysqli_query($this->link->conn,$query);
 		$all_id = '';
 		$i = 0; 
@@ -57,7 +57,7 @@ class Dao
 			$i++;
 		}
 			// echo $all_id;die;
-		$query = "SELECT `riwayat`.*, merk,plat_nomor,pengguna, latitude, longitude, batas, nama_lokasi FROM `kendaraan`,`lokasi`,`riwayat` WHERE `lokasi`.id_kendaraan = `kendaraan`.id AND `lokasi`.id = `riwayat`.id_lokasi AND `riwayat`.id IN ($all_id)";
+		$query = "SELECT * FROM `riwayat` WHERE `riwayat`.id IN ($all_id)";
 		$lokasi = mysqli_query($this->link->conn,$query);
 		$all_lokasi = array();
 		$idx = 0;
@@ -98,7 +98,7 @@ class Dao
 	public function cekJarak($id, $latitude_now, $longitude_now)
 	{
 		$result = array();
-		$query = "SELECT * FROM lokasi WHERE id = '$id'";
+		$query = "SELECT * FROM lokasi WHERE id_kendaraan = '$id' AND status = '1'";
 		$batas = mysqli_query($this->link->conn,$query);
 		$batas = $batas->fetch_array();
 		$result['jarak'] = $this->getDistance($batas['latitude'],$batas['longitude'],$latitude_now,$longitude_now);
