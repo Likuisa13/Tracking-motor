@@ -75,7 +75,7 @@ class Dao
 	}
 
 	public function getDetailHistory($id){
-		$query = "SELECT `riwayat`.*, merk,plat_nomor,pengguna,latitude, longitude, nama_lokasi, batas FROM `kendaraan`,`lokasi`,`riwayat` WHERE `lokasi`.id_kendaraan = `kendaraan`.id AND `lokasi`.id = `riwayat`.id_lokasi AND `riwayat`.id = '$id'";
+		$query = "SELECT `riwayat`.* FROM `riwayat` WHERE `riwayat`.id = '$id'";
 		$result = mysqli_query($this->link->conn, $query);
 		$result = $result->fetch_array();	
 		$riwayat = array();
