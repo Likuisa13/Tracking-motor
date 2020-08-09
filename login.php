@@ -10,9 +10,19 @@
 	<link rel="icon" href="img/icon.png">
 </head>
 <body>
+	
 	<div class="row">
 		<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
 			<div class="login-panel panel panel-default">
+			<?php 
+            if (isset($_GET['message']) && !empty($_GET['message'])) {
+                ?>
+                <div class="alert bg-<?= $_GET['bg'] ?> alert-dismissible" role="alert">
+                    <button type="button" style="color:black" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong><?= $_GET['message'] ?>
+                </div>
+                <?php
+            }?>
 				<div class="panel-heading"><center>Log in</center></div>
 				<div class="panel-body">
 					<form role="form" action="_cek_login" method="POST">
@@ -23,7 +33,9 @@
 							<div class="form-group">
 								<input class="form-control" placeholder="Password" name="password" type="password" value="">
 							</div>
-							<button type="submit" class="btn btn-primary">Login</button></fieldset>
+							<button type="submit" class="btn btn-primary">Login</button>
+							<a class="pull-right" href="forgot-password.php">Forgot Password</a>
+						</fieldset>
 					</form>
 				</div>
 			</div>

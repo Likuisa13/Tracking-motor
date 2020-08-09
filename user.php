@@ -8,16 +8,18 @@
 		$('#nama').val('');
 		$('#username').val('');
 		$('#password').val('');
+		$('#email').val('');
 		$('#tombol').text('Save');
 		$('#ModalUser').modal('show');
 	}
 
-	function edit(id,nama,username) {
+	function edit(id,nama,username,email) {
 		$('#aksi').val('edit');
 		$('#id_user').val(id);
 		$('#nama').val(nama);
 		$('#username').val(username);
 		$('#password').val('');
+		$('#email').val(email);
 		$('#tombol').text('Edit');
 		$('#ModalUser').modal('show');
 	}
@@ -54,9 +56,9 @@
 								<th>No</th>
 								<th>Nama</th>
 								<th>Username</th>
-								<th>Password</th>
-								<th>Hak Akses</th>
-								<!-- <th>Aksi</th> -->
+								<th>Password Hash</th>
+								<th>Email</th>
+								<th>Aksi</th>
 							</thead>
 							<tbody>
 								<?php 
@@ -65,7 +67,7 @@
 								$result = $dao->view('users');
 								$no = 1;
 								foreach ($result as $value) { 
-									$edit = "'".$value['id']."','".$value['nama']."','".$value['username']."'";
+									$edit = "'".$value['id']."','".$value['nama']."','".$value['username']."','".$value['email']."'";
 									$del = "'".$value['id']."','".$value['nama']."'";
 									?>
 									<tr>
@@ -73,7 +75,7 @@
 										<td><?php echo $value['nama'] ?></td>
 										<td><?php echo $value['username'] ?></td>
 										<td><?php echo $value['password'] ?></td>
-										<!-- <td><?php echo $value['roles'] ?></td> -->
+										<td><?php echo $value['email'] ?></td>
 										<td nowrap="">
 											<button class="btn btn-sm btn-warning" onclick="edit(<?php echo $edit ?>);"><i class="fa fa-edit"></i> Edit</button>
 											<button class="btn btn-sm btn-danger" onclick="del(<?php echo $del ?>)"><i class="fa fa-trash"></i> Delete</button>
@@ -101,11 +103,15 @@
 				<div class="modal-body">
 					<form action="_crud_user" method="post">
 						<div class="row">
-							<div class="col-md-12">
+							<div class="col-md-6">
 								<label>Nama</label>
 								<input type="hidden" name="aksi" id="aksi">
 								<input type="hidden" name="id_user" id="id_user">
 								<input type="text" name="nama" required="yes" id="nama" class="form-control" placeholder="Nama">
+							</div>
+							<div class="col-md-6">
+								<label>Email</label>
+								<input type="email" name="email" required="yes" id="email" class="form-control" placeholder="Email Address">
 							</div>
 						</div>
 						<div class="row">

@@ -1,18 +1,76 @@
 <?php 
 include_once 'dbconfig.php';
+include_once 'mailer.php';
 
 class Dao 
 {
 	var $link;
 	var $assets = '/tracking/img/';
+	var $host = 'http://localhost/tracking';
 	public function __construct()
 	{
 		$this->link = new Dbconfig(); 
+		date_default_timezone_set("Asia/Jakarta");
 	}
 
 	public function login($username,$password) {
 		$query = "SELECT * FROM `users` WHERE username='$username' and password = PASSWORD('$password')";
 		return mysqli_query($this->link->conn, $query);
+	}
+
+	public function forgotPass($username)
+	{
+		$query = "SELECT * FROM `users` WHERE `username` = '$username'";
+		$user = mysqli_query($this->link->conn, $query);
+
+		if ($user->num_rows != 0) {
+			$data = $user->fetch_assoc();
+			$token = $this->setToken();
+			$to = $data['email'];
+			$this->insertToken($username, $token);
+			$subject = 'Reset password Smart Tracking';
+			$mailContent='
+			Silakan Klik Tombol dibawah ini untuk mengubah password akun anda<br> 
+			<a style="cursor:pointer;" href="'.$this->host.'/change-password.php?token='.$token.'&email='.$to.'"><button style="background-color: #4CAF50; border: none;  color: white;  padding: 15px 32px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;">RESET PASSWORD</button></a>';
+			// var_dump($mailContent);die;
+			$email = new Mailer();
+			if($email->sendEmail($subject, $mailContent, $to)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public function insertToken($username,$token)
+	{
+		$expired = date('Y-m-d H:i:s', strtotime('+15 minutes', time()));
+		$query = "UPDATE `users` SET token = '$token', token_expired = '$expired' WHERE username = '$username'";
+		return mysqli_query($this->link->conn,$query);	
+	}
+
+	public function setToken()
+	{
+		$kode = null;
+		$characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$charactersLength = strlen($characters);
+		for ($i = 0; $i < 8; $i++) {
+			$kode .= $characters[rand(0, $charactersLength - 1)];
+		}
+		return $kode;
+	}
+
+	public function validToken($email,$token)
+	{
+		$query = "SELECT * FROM `users` WHERE token = '$token' AND email = '$email'";
+		$result = mysqli_query($this->link->conn,$query);
+		if ($result != false) {
+			$result = $result->fetch_assoc();
+			if ($result['token_expired'] < date("Y-m-d H:i:s")) {
+				return false;
+			}
+			return true;
+		}
+		return false;
 	}
 
 	public function view($tabel)

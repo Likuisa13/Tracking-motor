@@ -74,10 +74,10 @@
 												}
 												?>
 											</select>
-											<!-- <label>Latitude</label> -->
-											<input type="hidden" id="lat" name="lat" class="form-control" placeholder="Latitude" readonly="yes" value="<?php echo $lat ?>">
-											<!-- <label>Longitude</label> -->
-											<input type="hidden" id="lng" name="lng" class="form-control" placeholder="Longitude" readonly="yes" value="<?php echo $lng ?>">
+											<label>Latitude</label>
+											<input type="text" id="lat" name="lat" class="form-control" placeholder="Latitude" readonly="yes" value="<?php echo $lat ?>">
+											<label>Longitude</label>
+											<input type="text" id="lng" name="lng" class="form-control" placeholder="Longitude" readonly="yes" value="<?php echo $lng ?>">
 											<label>Radius</label>
 											<div class="input-group">
 												<input type="text" id="radius" value="<?php echo $radius ?>" name="radius" class="form-control" placeholder="Radius" aria-describedby="basic-addon2">
@@ -121,9 +121,9 @@
 	<?php include_once 'template/js.php'; ?>	
 	<script>
 		var place;
+		var map, center, marker, rad, cityCircle;
 
 		function initMap() {
-			var map, center;
 			var lati = parseFloat(document.getElementById('lat').value); 
 			var longi = parseFloat(document.getElementById('lng').value); 
 			var input = document.getElementById('nama_lokasi');
@@ -145,7 +145,7 @@
 			var autocomplete = new google.maps.places.Autocomplete(input);
 			autocomplete.bindTo('bounds', map);
 
-			var marker = new google.maps.Marker({
+			marker = new google.maps.Marker({
 				map: map,
 				draggable: true,
 				anchorPoint: new google.maps.Point(0, -29)
@@ -183,7 +183,11 @@
 				google.maps.event.addListener(marker, 'dragend', function(event) {
 					marker.getPosition().lat();
 					$('#lat').val(marker.getPosition().lat());
-					$('#lng').val(marker.getPosition().lng());   
+					$('#lng').val(marker.getPosition().lng());  
+					if (rad != null) {
+						cityCircle.setMap(null);
+						initialize();
+					}
 				});
 			});
 		}
@@ -191,10 +195,9 @@
 
 		function initialize() {
 			var lati = document.getElementById('lat').value; 
-			var longi = document.getElementById('lng').value; 
-			var rad = document.getElementById('radius').value;
-			var citymap = new google.maps.LatLng(lati,longi);
-			var cityCircle, center;
+			var longi = document.getElementById('lng').value;
+			var center;
+			rad = document.getElementById('radius').value;
 			if (lati != '' && longi != '') {
 				center = new google.maps.LatLng(lati,longi);
 			}
@@ -203,15 +206,9 @@
 				center: new google.maps.LatLng(lati,longi),
 			};
 
-			var map = new google.maps.Map(document.getElementById('googleMap'),
-				mapOptions);
-
-			var marker = new google.maps.Marker({
-				position: center,
-				map: map,
-				draggable: true,
-				anchorPoint: new google.maps.Point(0, -29)
-			});
+			lati = document.getElementById('lat').value; 
+			longi = document.getElementById('lng').value; 
+			var citymap = new google.maps.LatLng(lati,longi);
 
 			if (rad > 10)
 				map.setZoom(11);
@@ -236,6 +233,9 @@
 		}
 
 		$('#radius').keyup(function(){
+			if (cityCircle != null) {
+				cityCircle.setMap(null);
+			}
 			if ($('#nama_lokasi').val() != ''){
 				initialize();
 			}
@@ -255,7 +255,6 @@
 		$('#kembali').click(function(){
 			window.location = "maps";
 		});
-
 	</script>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuqp6YJymNF8Et7Xvd6SO3sBYqu2Bkc88&libraries=places&callback=initMap"></script>
 	</html>
