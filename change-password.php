@@ -2,11 +2,11 @@
 include_once 'config/dao.php';
 $dao = new Dao();
 if (empty($_GET['email']) || empty($_GET['token'])) {
-	header("location:index");
+	header("location:login");
 }
 else{
 	if (!$dao->validToken($_GET['email'],$_GET['token'])) {
-		header("location:index");
+		header("location:login?bg=danger&message=Expired Token !");
 	}
 }
 ?>

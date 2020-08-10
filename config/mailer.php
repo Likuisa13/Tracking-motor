@@ -6,7 +6,7 @@ class Mailer
 	{
         ini_set( 'display_errors', 1 );   
         error_reporting( E_ALL );  
-        $from = 'admin@sediajasa.id';
+        $from = 'admin@tracking.bottani.co';
         $message = $mailContent;   
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";

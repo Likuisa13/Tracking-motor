@@ -7,6 +7,7 @@ $hasil = $dao->login($user, $pass);
 
 if($hasil->num_rows == 1){  
 	session_start();
+	$_SESSION['user'] = $hasil->fetch_assoc();
 	$_SESSION['login'] = '1';
 	header('location:index');	
 }

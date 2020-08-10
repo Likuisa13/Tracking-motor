@@ -34,7 +34,7 @@
 								<input class="form-control" placeholder="Password" name="password" type="password" value="">
 							</div>
 							<button type="submit" class="btn btn-primary">Login</button>
-							<a class="pull-right" href="forgot-password.php">Forgot Password</a>
+							<a class="pull-right" href="forgot-password">Forgot Password</a>
 						</fieldset>
 					</form>
 				</div>
