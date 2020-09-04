@@ -14,4 +14,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.html -f
 RewriteRule ^(.*)$ $1.html
 
+<ifModule mod_headers.c>
+Header set Connection keep-alive
+</ifModule>
 

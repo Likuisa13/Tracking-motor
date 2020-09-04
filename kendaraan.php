@@ -53,6 +53,7 @@
 						<table class="table table-striped">
 							<thead style="background-color: #1E90FF; color:white;" class="text-center">
 								<th>No</th>
+								<th>ID Kendaraan</th>
 								<th>Merk</th>
 								<th>Plat Nomor</th>
 								<th>Pengguna</th>
@@ -70,6 +71,7 @@
 									?>
 									<tr>
 										<td><?php echo $no; $no++; ?></td>
+										<td><?php echo $value['id'] ?></td>
 										<td><?php echo $value['merk'] ?></td>
 										<td><?php echo $value['plat_nomor'] ?></td>
 										<td><?php echo $value['pengguna'] ?></td>

@@ -18,8 +18,17 @@
 			<div class="col-lg-12">
 				<h1 class="page-header">History</h1>
 				<div class="panel">
-					<div class="panel-body container-fluid">
-						<table class="table table-striped" id="riwayat">
+					<div class="dropdown pull-right">
+						<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-download"></i> Download
+						<span class="caret"></span></button>
+						<ul class="dropdown-menu">
+							<li><a target="_blank" href="__cetak_pdf">PDF</a></li>
+							<li><a target="_blank" href="__cetak_csv">CSV</a></li>
+							<li><a target="_blank" href="__cetak_excel">Excel</a></li>
+						</ul>
+					</div>
+					<div class="panel-body container-fluid" id="data_riwayat">
+						<table style="border-style: initial; border-width: 0.5px" class="table table-striped" id="riwayat">
 							<thead style="background-color: #1E90FF; color:white;" class="text-center">
 								<th><center>No</center></th>
 								<th>Waktu</th>
@@ -61,5 +70,20 @@
 		</div><!--/.row-->
 	</div>
 	<?php include_once 'template/js.php'; ?>	
+	<script type="text/javascript">
+		$(document).ready(function () {
+			setInterval(function(){
+				// console.log('oke');
+				$.ajax({						
+					type: 'POST',
+					url: "tabel_riwayat.php",
+					data: "",
+					success: function(msg){
+						$("#data_riwayat").html(msg);
+					}
+				});
+			},2000);
+		});
+	</script>
 </body>
 </html>
